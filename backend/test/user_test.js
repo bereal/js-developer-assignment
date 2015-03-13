@@ -16,6 +16,8 @@ describe('User tests', function() {
     usr.addRoles(['c', 'd']);
     usr.get('roles').length.should.equal(4);
     usr.get('roles').should.contain('d');
+    usr.addRoles('e', ['f', 'd'], 'h');
+    usr.get('roles').length.should.equal(7);
   });
 
   it('should save a User', function() {
@@ -32,6 +34,15 @@ describe('User tests', function() {
       .fetch()
       .then(function() {
         user.get('password').should.not.equal('supersecRet');
+        user.get('salt').should.have.length(models.User.SALT_LENGTH);
+      });
+  });
+
+  it('should be possible to check password', function() {
+    return user
+      .fetch()
+      .then(function() {
+        user.checkPassword('supersecRet');
       });
   });
 
