@@ -1,7 +1,7 @@
 var crypto = require('crypto');
 var deasync = require('deasync');
 var serverbone = require('serverbone');
-var _ = require('underscore');
+var _ = require('lodash');
 var config = require('../config');
 
 var schema = {

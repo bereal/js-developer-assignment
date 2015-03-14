@@ -15,7 +15,9 @@
     "backbone-db": "~0.4",
     "serverbone": "~0.2",
     "express": "~4.1.1",
-    "body-parser": "~1.0.2"
+    "body-parser": "~1.0.2",
+    "deasync": "~0.0.10",
+    "lodash": "~3.5.0"
   },
   "devDependencies": {
     "mocha": "~1.18",
