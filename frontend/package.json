@@ -16,6 +16,17 @@
   "devDependencies": {
     "reactify": "~1.1.0",
     "browserify": "~9.0.3",
-    "gulp": "~3.8.11"
+    "gulp": "~3.8.11",
+    "react-tools": "~0.13.0",
+    "jest-cli": "~0.4.0"
+  },
+  "jest": {
+    "scriptPreprocessor": "<rootDir>/preprocessor.js",
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/react"
+    ]
+  },
+  "scripts": {
+      "test": "jest"
   }
 }

@@ -8,7 +8,7 @@ function UserModel(src) {
 
 UserModel.prototype = {
     list: function() {
-        return Promise.resolve($.ajax(this.src));
+        return Promise.resolve($.get(this.src));
     },
 
     addUser: function(data) {
@@ -20,8 +20,8 @@ UserModel.prototype = {
             var req = $.ajax({
                 method: 'POST',
                 url: this.src,
-                data: data,
-                dataType: 'json'
+                data: JSON.stringify(data),
+                contentType: 'application/json'
             });
             req.success(fulfil);
             req.error(function(err) {
