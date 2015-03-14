@@ -1,4 +1,5 @@
 var crypto = require('crypto');
+var deasync = require('deasync');
 var serverbone = require('serverbone');
 var _ = require('underscore');
 var config = require('../config');
@@ -6,6 +7,7 @@ var config = require('../config');
 var schema = {
   id: 'schema/user',
   type: 'object',
+  indexes: [{property: 'username'}],
   permissions: {
       '*': ['create', 'read'],
       'admin': ['*'],
@@ -38,7 +40,7 @@ var User = serverbone.models.ACLModel.extend({
   type: 'user',
   db: config.store,
   sync: function(method, model, options) {
-    if (method == 'create') {
+    if (method === 'create' || method === 'update') {
       var hash = User.hashPassword(model.attributes.password);
       model.attributes.salt = hash.salt;
       model.attributes.password = hash.digest;
@@ -76,6 +78,21 @@ var User = serverbone.models.ACLModel.extend({
          roles.push(_.isArray(item) ? item : [item]);
      });
      this.set('roles', _.union.apply(undefined, roles));
+   },
+
+   customValidation: function(attrs, options) {
+     // TODO: get rid of deasync?
+
+     var findAll = deasync(this.db.findAll.bind(this.db));
+
+     try {
+       var data = findAll(this, {limit: 1});
+       if (data && data.id !== attrs.id) {
+         return {message: 'Username ' + attrs.username + ' is already taken'};
+       }
+     } catch (err) {
+       // OK
+     }
    },
 
    getRoles: function(model) {
