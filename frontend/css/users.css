@@ -4,9 +4,15 @@ html {
 }
 
 body {
-    max-width: 550px;
+    max-width: 700px;
     margin: 0 auto;
     padding: 0;
+    background: #999;    
+    font-family: Helvetica;
+}
+
+h1 {
+    text-align: center;
 }
 
 #usersapp {
@@ -18,26 +24,32 @@ body {
                 0 25px 50px 0 rgba(0, 0, 0, 0.1);
 }
 
-#usersapp ul {
-    list-style: none;
-    padding: 0;
+#usersapp table {
+    width: 100%;
+    margin: 0;
+    border-spacing: 0;
 }
 
-#usersapp li {
-    position: relative;
-    font-size: 24px;
-    border-bottom: 1px solid #ccc;
-    list-style: none;
-    padding: 10px 0 10px 20px;
+#usersapp th {
+    margin: 0;
+    background-color: #aaa;
+    padding: 10px 0 10px 10px;
+    text-align: left;
 }
 
-/*
-#usersapp li .new input[type="checkbox"] {
-    display: none;
+#usersapp table td {
+    padding: 5px 0 5px 10px;
+    border-bottom: 1px solid #aaa;
 }
-*/
 
-#usersapp li .admin {
-    font-style: italic;
-    color: red;
+#usersapp table tbody tr:last-child td {
+    padding: 20px 20px 10px 10px;
+}
+
+#usersapp input, label {
+    font-size: 20px;
+}
+
+#usersapp input[type="checkbox"] {
+    margin-left: 10px;
 }
