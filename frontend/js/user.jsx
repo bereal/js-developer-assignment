@@ -2,6 +2,7 @@ var React = require('react');
 var _ = require('lodash');
 var $ = require('jquery');
 var classNames = require('classnames');
+var connect = require('./userModel').connect;
 
 var User = React.createClass({
     getInitialState: function() {
@@ -29,28 +30,22 @@ var NewUser = React.createClass({
     },
 
     submit: function() {
-        if (!(this.state.username && this.state.password)) {
-            alert('Username and password are required.');
-            return;
-        }
         var roles = [];
         if (this.state.isAdmin) {
             roles.push('admin');
         }
-        var req = $.ajax({
-            method: 'POST',
-            url: this.props.src,
-            data: {username: this.state.username,
-                   password: this.state.password,
-                   roles: roles},
-            dataType: 'json'
-        });
-        req.success(function(data) {
+
+        var userData = {
+            username: this.state.username,
+            password: this.state.password,
+            roles: roles
+        };
+
+        var success = function(data) {
             this.props.onAddUser(data);
-        }.bind(this));
-        req.error(function(err) {
-            alert(err.responseJSON.error_description);
-        });
+        }.bind(this);
+
+        this.props.model.addUser(userData).then(this.props.onAddUser, alert);
     },
 
     handleKeyDown: function(event) {
@@ -93,12 +88,9 @@ var UserList = React.createClass({
     },
 
     componentDidMount: function() {
-        $.ajax({
-            url: this.props.src,
-            success: function (data) {
-                this.setState({users: data});
-            }.bind(this)
-        });
+        this.props.model.list().then(function(data) {
+            this.setState({users: data})
+        }.bind(this));
     },
 
     addUser: function(user) {
@@ -111,13 +103,17 @@ var UserList = React.createClass({
         var users = this.state.users.map(function(user) {
             return (<li><User data={user}/></li>);
         });
-        users.push(<li><NewUser src={this.props.src}
-                                onAddUser={this.addUser.bind(this)}/></li>);
+        users.push(
+          <li>
+            <NewUser model={this.props.model}
+                     onAddUser={this.addUser.bind(this)}/>
+          </li>);
         return (<ul>{users}</ul>);
     }
 });
 
 var render = module.exports.render = function(src, elementId) {
-    React.render(<UserList src={src}/>,
+    var model = connect(src);
+    React.render(<UserList model={model}/>,
                  document.getElementById(elementId));
 };

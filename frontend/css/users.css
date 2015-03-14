@@ -39,4 +39,5 @@ body {
 
 #usersapp li .admin {
     font-style: italic;
+    color: red;
 }
