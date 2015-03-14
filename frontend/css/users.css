@@ -1,0 +1,42 @@
+html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    max-width: 550px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+#usersapp {
+    margin: 30px auto;
+    padding: 0;
+    list-style: none;
+    background: #ddd;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
+                0 25px 50px 0 rgba(0, 0, 0, 0.1);
+}
+
+#usersapp ul {
+    list-style: none;
+    padding: 0;
+}
+
+#usersapp li {
+    position: relative;
+    font-size: 24px;
+    border-bottom: 1px solid #ccc;
+    list-style: none;
+    padding: 10px 0 10px 20px;
+}
+
+/*
+#usersapp li .new input[type="checkbox"] {
+    display: none;
+}
+*/
+
+#usersapp li .admin {
+    font-style: italic;
+}

@@ -15,7 +15,7 @@ var default_actor = {
 };
 
 var app = express();
-app.use('/ui', express.static(__dirname + '/../frontend'));
+app.use('/ui', express.static(__dirname + '/../frontend/build'));
 app.use(bodyParser());
 app.use(function (req, res, next) {
     req.actor = default_actor; next();
