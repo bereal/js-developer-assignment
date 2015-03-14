@@ -93,6 +93,9 @@ var User = serverbone.models.ACLModel.extend({
      } catch (err) {
        // OK
      }
+
+     if (!(attrs.username && attrs.password))
+         return {message: 'Username and password are required.'};
    },
 
    getRoles: function(model) {

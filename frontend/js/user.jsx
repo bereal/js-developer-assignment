@@ -29,6 +29,10 @@ var NewUser = React.createClass({
     },
 
     submit: function() {
+        if (!(this.state.username && this.state.password)) {
+            alert('Username and password are required.');
+            return;
+        }
         var roles = [];
         if (this.state.isAdmin) {
             roles.push('admin');
