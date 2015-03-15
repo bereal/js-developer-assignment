@@ -46,6 +46,22 @@ describe('User tests', function() {
       });
   });
 
+  it('should reject empty password', function() {
+      var err = user.customValidation({username: 'name', password:''})
+      err.message.toLowerCase().should.include('password');
+  });
+
+  it('should reject empty username', function() {
+      var err = user.customValidation({username: '', password: 'secret'});
+      err.message.toLowerCase().should.include('username');
+  });
+
+  it('should reject owner role', function() {
+      var err = user.customValidation({username: 'user', password: 'secret',
+                                       roles: ['owner']});
+      err.message.toLowerCase().should.include('owner');
+  });
+
   it('should list users', function() {
     var users = new collections.Users();
     return users

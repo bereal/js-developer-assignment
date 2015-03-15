@@ -81,8 +81,13 @@ var User = serverbone.models.ACLModel.extend({
    },
 
    customValidation: function(attrs, options) {
-     // TODO: get rid of deasync?
+     if (!(attrs.username && attrs.password))
+       return {message: 'Username and password are required.'};
 
+     if (_.contains(attrs.roles, 'owner'))
+       return {message: "'owner' cannot be a user role"};
+
+     // TODO: get rid of deasync?
      var findAll = deasync(this.db.findAll.bind(this.db));
 
      try {
@@ -93,9 +98,6 @@ var User = serverbone.models.ACLModel.extend({
      } catch (err) {
        // OK
      }
-
-     if (!(attrs.username && attrs.password))
-         return {message: 'Username and password are required.'};
    },
 
    getRoles: function(model) {
