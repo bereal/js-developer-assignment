@@ -10,30 +10,35 @@ function MockModel(users, err) {
     this.err = err;
 }
 
-function resolve(value) {
-    return {
-        then: function(ok, _) {
-            ok(value)
-        }
-    }
-}
 
-function reject(value) {
-    return {
-        then: function(_, fail) {
-            fail(value);
+var Promise = {
+    resolve: function(value) {
+        return {
+            then: function(ok, _) {
+                ok(value)
+            }
+        }
+    },
+
+    reject: function(value) {
+        return {
+            then: function(_, fail) {
+                fail(value);
+            }
         }
     }
-}
+};
+
+
 MockModel.prototype = {
     list: function() {
-        return resolve([]);
+        return Promise.resolve([]);
     },
 
     addUser: function(user) {
-        if (this.err) return reject(this.err);
+        if (this.err) return Promise.reject(this.err);
         this.users.push(user);
-        return resolve(user);
+        return Promise.resolve(user);
     }
 };
 
@@ -79,7 +84,7 @@ describe('UserList component', function() {
     });
 
     it('should handle model errors', function() {
-        var model = new MockModel([], reject('Oops'));
+        var model = new MockModel([], Promise.reject('Oops'));
         var onError = jest.genMockFunction();
 
         var ul = TestUtils.renderIntoDocument(
