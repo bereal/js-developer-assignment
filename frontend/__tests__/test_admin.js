@@ -5,11 +5,6 @@ var UserList = require('../js/user.jsx').UserList;
 var TestUtils = React.addons.TestUtils;
 var Simulate = TestUtils.Simulate;
 
-function MockModel(users, err) {
-    this.users = users || [];
-    this.err = err;
-}
-
 
 var Promise = {
     resolve: function(value) {
@@ -30,6 +25,13 @@ var Promise = {
 };
 
 
+function MockModel(users, err) {
+    this.users = users || [];
+    this.err = err;
+    this.counter = 0;
+}
+
+
 MockModel.prototype = {
     list: function() {
         return Promise.resolve([]);
@@ -37,6 +39,7 @@ MockModel.prototype = {
 
     addUser: function(user) {
         if (this.err) return Promise.reject(this.err);
+        user.id = ++this.counter;
         this.users.push(user);
         return Promise.resolve(user);
     }
@@ -64,7 +67,8 @@ describe('UserList component', function() {
         Simulate.keyDown(Username, {key: 'Enter'});
 
         expect(Model.users.length).toBe(1);
-        expect(Model.users[0]).toEqual({username: 'user',
+        expect(Model.users[0]).toEqual({id: 1,
+                                        username: 'user',
                                         password: 'secret',
                                         roles: []});
     });
@@ -77,7 +81,8 @@ describe('UserList component', function() {
         Simulate.keyDown(Username, {key: 'Enter'});
 
         expect(Model.users.length).toBe(1);
-        expect(Model.users[0]).toEqual({username: 'user',
+        expect(Model.users[0]).toEqual({id: 1,
+                                        username: 'user',
                                         password: 'secret',
                                         roles: ['admin']});
 

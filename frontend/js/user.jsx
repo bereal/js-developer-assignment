@@ -4,6 +4,12 @@ var classNames = require('classnames');
 var connect = require('./userModel').connect;
 
 
+/**
+   User creation form
+   Usage:
+   <NewUser model={model} onError={errorHandler}
+                          onAddUser={successCallback} />
+ */
 var NewUser = React.createClass({
     getInitialState: function() {
         return { };
@@ -52,7 +58,7 @@ var NewUser = React.createClass({
             <input name="username" ref="username" placeholder="Username" title={title}
                    onKeyDown={this.handleKeyDown} onChange={this.handleUsername}/>
 
-            <input name="password" type="password" ref="password" 
+            <input name="password" type="password" ref="password"
                    placeholder="Password" title={title}
                    onKeyDown={this.handleKeyDown} onChange={this.handlePassword}/>
 
@@ -64,6 +70,10 @@ var NewUser = React.createClass({
 });
 
 
+/**
+   Usage:
+   <UserList model={model} [onError={errorHandler} | alert]/>
+ */
 var UserList = module.exports.UserList = React.createClass({
     getInitialState: function () {
         return { users: [] };
@@ -89,7 +99,7 @@ var UserList = module.exports.UserList = React.createClass({
         );
         var users = this.state.users.map(function(user) {
             return (
-                <tr>
+                <tr key={user.id}>
                   <td width="5%">{user.id}</td>
                   <td>{user.username}</td>
                   <td>{user.roles.join(', ')}</td>
@@ -97,7 +107,7 @@ var UserList = module.exports.UserList = React.createClass({
             );
         });
         users.push(
-          <tr>
+          <tr key="0">
           <td colSpan="3">
             <NewUser ref="newUser"
                      model={this.props.model}
